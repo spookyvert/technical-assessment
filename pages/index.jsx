@@ -20,7 +20,7 @@ export default function Home() {
 
   const parseMarkdown = () => {
     // Split the input into an array of lines
-    const markdownLines = document.getElementById('markdown').value.split('\n').map((line) => line === ""  ?  line = "\n" : line);
+    const markdownLines = document.getElementById('markdown').value.split('\n').map((line) => line === ""  ?  "\n" : line);
 
     const htmlLines = [];
 
