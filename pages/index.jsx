@@ -18,28 +18,35 @@ export default function Home() {
     return Object.keys(markdownMap).find(key => markdownMap[key] === value);
   }
 
-  const parseMarkdown = (e) => {
+  const parseMarkdown = () => {
     // Split the input into an array of lines
     const markdownLines = document.getElementById('markdown').value.split('\n').map((line) => line === ""  ?  line = "\n" : line);
 
     const htmlLines = [];
 
     markdownLines.forEach(line => {
-    // return if line is empty, null check
+    // add new line if line is empty
     if (line === "\n" ) {
      return  htmlLines.push(line);
     }
 
+    // replace links if present
+    const data = line.replace(/\[([^\]]+)\]\(([^\)]+)\)/, '<a href="$2">$1</a>');
+
     // get tagname based on markdownMap
     const resolvedTag = getKeyByValue(line.split(" ")[0])
 
-    // use regex replace links
-    const anchorRegex = line.replace(/\[([^\]]+)\]\(([^\)]+)\)/, '<a href="$2">$1</a>');
+    let output;
 
-    const htmlLine = resolvedTag  ? `<${resolvedTag}>${anchorRegex.split(" ").slice(1).join(" ")}</${resolvedTag}>`
-      : `<p>${anchorRegex}</p>`;
+    if (!resolvedTag) {
+      // return paragraph tag
+      output = `<p>${data}</p>`;
+    } else {
+      // return header tag
+      output = `<${resolvedTag}>${data.split(" ").slice(1).join(" ")}</${resolvedTag}>`
+    }
 
-    htmlLines.push(htmlLine);
+    htmlLines.push(output);
     });
 
     let htmlOutput = document.getElementById('html-output')

@@ -1,3 +1,5 @@
+## Install packages 
+`yarn`
 ## Run tests
 
 `yarn test`
